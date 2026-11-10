@@ -1,0 +1,163 @@
+@model Movie
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container page-shell">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Movie" asp-action="Index">Phim</a></li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">@Model.Title</li>
+        </ol>
+    </nav>
+
+    <div class="galaxy-panel p-4">
+        <div class="row g-4">
+            <div class="col-md-4 col-lg-3">
+                <div class="movie-poster rounded-3 overflow-hidden">
+                    @if (Model.Status == MovieStatus.NowShowing)
+                    {
+                        <span class="movie-status-badge badge-now">Đang chiếu</span>
+                    }
+                    else
+                    {
+                        <span class="movie-status-badge badge-coming">Sắp chiếu</span>
+                    }
+                    <img class="img-fluid w-100" src="@(string.IsNullOrEmpty(Model.PosterUrl) ? "/img/misc/poster-placeholder.svg" : Model.PosterUrl)" alt="@Model.Title" />
+                    @if (Model.Rating > 0)
+                    {
+                        <span class="rating-shield"><i class="bi bi-star-fill"></i>@Model.Rating.ToString("0.0")</span>
+                    }
+                </div>
+            </div>
+            <div class="col-md-8 col-lg-9">
+                <h1 class="fw-bold mb-1">@Model.Title</h1>
+                <div class="text-muted mb-2"><i class="bi bi-calendar-event me-1"></i>Khởi chiếu: @Model.ReleaseDate.ToString("dd/MM/yyyy") &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>@Model.DurationMinutes phút</div>
+
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @if (!string.IsNullOrEmpty(Model.Genre))
+                    {
+                        foreach (var g in Model.Genre.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                        {
+                            <a asp-controller="Movie" asp-action="Index" asp-route-genre="@g" class="btn btn-theme btn-sm rounded-pill px-3">@g</a>
+                        }
+                    }
+                </div>
+
+                <h5 class="font-display mt-3"><i class="bi bi-justify me-2" style="color:var(--accent-cyan)"></i>Nội dung phim</h5>
+                <p class="text-muted" style="white-space: pre-line">@Model.Description</p>
+
+                <div class="row mt-2 g-3">
+                    <div class="col-sm-6">
+                        <div class="summary-item"><span class="text-muted">Đạo diễn</span><strong>@Model.Director</strong></div>
+                        <div class="summary-item"><span class="text-muted">Thời lượng</span><strong>@Model.DurationMinutes phút</strong></div>
+                        <div class="summary-item"><span class="text-muted">Đánh giá BG</span><strong style="color:var(--accent-gold)">@(Model.Rating > 0 ? Model.Rating.ToString("0.0") + " / 10" : "Chưa có")</strong></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="summary-item"><span class="text-muted">Thể loại</span><strong>@Model.Genre</strong></div>
+                        <div class="summary-item"><span class="text-muted">Trạng thái</span><strong>@(Model.Status == MovieStatus.NowShowing ? "Đang chiếu" : "Sắp chiếu")</strong></div>
+                        <div class="summary-item"><span class="text-muted">Diễn viên</span><strong>@Model.Cast</strong></div>
+                    </div>
+                </div>
+
+                <div class="mt-3">
+                    <h5 class="font-display mb-2"><i class="bi bi-star me-2" style="color:var(--accent-gold)"></i>Đánh giá từ khách hàng</h5>
+                    @if (ViewBag.AverageRating != null)
+                    {
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="rating-shield" style="font-size:.9rem"><i class="bi bi-star-fill"></i> @ViewBag.AverageRating / 5</span>
+                            <span class="text-muted small">(@ViewBag.RatingCount lượt đánh giá)</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-muted small mb-2">Chưa có đánh giá</div>
+                    }
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form method="post" asp-controller="Movie" asp-action="Rate" class="d-flex align-items-center gap-2 flex-wrap">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="movieId" value="@Model.Id" />
+                            <div class="d-flex gap-1" id="star-picker">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    var isChecked = (ViewBag.MyStars != null && i <= (int)ViewBag.MyStars);
+                                    <input type="radio" name="stars" value="@i" id="star@(i)" class="d-none" @(isChecked ? "checked" : "") />
+                                    <label for="star@(i)" class="star-label" title="@i sao"><i class="bi @(isChecked ? "bi-star-fill" : "bi-star")"></i></label>
+                                }
+                            </div>
+                            <button type="submit" class="btn btn-theme btn-sm"><i class="bi bi-check-lg me-1"></i>Lưu đánh giá</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="small" asp-area="Identity" asp-page="/Account/Login"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập để đánh giá</a>
+                    }
+                </div>
+
+                @if (Model.Status == MovieStatus.NowShowing)
+                {
+                    <div class="d-flex gap-2 mt-4 flex-wrap">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a class="btn btn-cta" asp-controller="Booking" asp-action="SelectShowtime" asp-route-movieId="@Model.Id"><i class="bi bi-ticket-perforated me-2"></i>Đặt vé ngay</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-cta" asp-area="Identity" asp-page="/Account/Login"
+                               asp-route-returnUrl="@Url.Action("SelectShowtime", "Booking", new { movieId = Model.Id })"><i class="bi bi-box-arrow-in-right me-2"></i>Đăng nhập để đặt vé</a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+                        {
+                            <a class="btn btn-ghost" href="#trailer"><i class="bi bi-play-circle me-2"></i>Xem trailer</a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.TrailerUrl))
+        {
+            <div id="trailer" class="mt-5">
+                <h5 class="font-display mb-3"><i class="bi bi-play-circle me-2" style="color:var(--accent-cyan)"></i>Trailer</h5>
+                <div class="ratio-iframe">
+                    <iframe src="@(
+                            Model.TrailerUrl?.Replace("watch?v=", "embed/")
+                                             .Replace("youtu.be/", "youtube.com/embed/")
+                        )"
+                            title="Trailer @Model.Title"
+                            allowfullscreen
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    #star-picker .star-label { font-size:1.3rem; cursor:pointer; transition: color .15s; color:rgba(255,255,255,0.2); }
+    #star-picker .star-label i.bi-star-fill { color:var(--accent-gold); }
+</style>
+
+@section Scripts {
+    <script>
+        (function () {
+            const labels = document.querySelectorAll('#star-picker label');
+            function highlight(count) {
+                labels.forEach((l, i) => {
+                    l.querySelector('i').className = i < count ? 'bi bi-star-fill' : 'bi bi-star';
+                });
+            }
+            labels.forEach(label => {
+                label.addEventListener('click', () => {
+                    const input = document.getElementById(label.getAttribute('for'));
+                    if (input) { input.checked = true; highlight(parseInt(input.value)); }
+                });
+                label.addEventListener('mouseenter', () => highlight(parseInt(label.querySelector('input')?.value || document.querySelector('#star-picker input:checked')?.value || '0')));
+            });
+            highlight(parseInt(document.querySelector('#star-picker input:checked')?.value || '0'));
+        })();
+    </script>
+}

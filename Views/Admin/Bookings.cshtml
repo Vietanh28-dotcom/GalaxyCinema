@@ -1,0 +1,81 @@
+@model List<Booking>
+@{
+    ViewData["Title"] = "Đơn đặt vé";
+}
+
+<div class="container page-shell">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-receipt me-2" style="color:var(--accent-cyan)"></i>Đơn đặt vé</h1>
+
+    <partial name="_AdminNav" />
+
+    <form method="get" class="row g-2 mb-4">
+        <div class="col-md-3">
+            <label class="form-label">Trạng thái</label>
+            <select name="status" class="form-select">
+                <option value="">Tất cả</option>
+                <option value="1" selected="@(ViewBag.Status == BookingStatus.Pending)">Chờ thanh toán</option>
+                <option value="2" selected="@(ViewBag.Status == BookingStatus.Paid)">Đã thanh toán</option>
+                <option value="3" selected="@(ViewBag.Status == BookingStatus.Cancelled)">Đã hủy</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Từ ngày</label>
+            <input name="from" type="date" class="form-control" value="@(ViewBag.From?.ToString("yyyy-MM-dd"))" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Đến ngày</label>
+            <input name="to" type="date" class="form-control" value="@(ViewBag.To?.ToString("yyyy-MM-dd"))" />
+        </div>
+        <div class="col-md-3 d-flex align-items-end gap-2">
+            <button class="btn btn-theme w-100" type="submit"><i class="bi bi-funnel me-1"></i>Lọc</button>
+        </div>
+    </form>
+
+    <div class="galaxy-panel p-0 overflow-auto">
+        <table class="table table-galaxy mb-0">
+            <thead>
+                <tr>
+                    <th>Mã vé</th>
+                    <th>Phim</th>
+                    <th>Khách hàng</th>
+                    <th>Suất chiếu</th>
+                    <th>Ghế</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model)
+                {
+                    <tr>
+                        <td class="font-display fw-bold" style="color:var(--accent-cyan)">@b.BookingCode</td>
+                        <td class="fw-bold">@b.Showtime.Movie.Title</td>
+                        <td>@b.CustomerName<br /><span class="text-muted small">@b.CustomerPhone</span></td>
+                        <td class="text-muted">@b.Showtime.StartTime.ToString("dd/MM HH:mm")</td>
+                        <td>@string.Join(", ", b.BookingSeats.Select(bs => bs.Seat.Code))</td>
+                        <td style="color:var(--accent-gold)">@b.TotalAmount.ToString("N0") ₫</td>
+                        <td>
+                            @switch (b.Status)
+                            {
+                                case BookingStatus.Paid: <span class="badge-status badge-paid">Đã thanh toán</span> break;
+                                case BookingStatus.Pending: <span class="badge-status badge-pending">Chờ thanh toán</span> break;
+                                default: <span class="badge-status badge-cancelled">Đã hủy</span> break;
+                            }
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-theme btn-sm" asp-action="BookingDetails" asp-route-code="@b.BookingCode"><i class="bi bi-eye"></i></a>
+                            @if (b.Status != BookingStatus.Cancelled)
+                            {
+                                <form asp-action="CancelBooking" method="post" asp-route-code="@b.BookingCode" class="d-inline" onsubmit="return confirm('Hủy đơn @b.BookingCode?');">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-danger-ghost btn-sm" type="submit" title="Hủy đơn"><i class="bi bi-x-lg"></i></button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

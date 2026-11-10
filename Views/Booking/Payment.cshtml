@@ -1,0 +1,61 @@
+@model Booking
+@{
+    ViewData["Title"] = "Thanh toán online";
+}
+
+<div class="container page-shell text-center">
+    <div class="error-orb" style="color:var(--accent-gold);font-size:3.4rem"><i class="bi bi-credit-card"></i></div>
+    <h1 class="fw-bold mt-2">Thanh toán đơn hàng</h1>
+    <p class="text-muted mb-4">Vui lòng hoàn tất thanh toán theo thông tin bên dưới.</p>
+
+    <div class="ticket galaxy-panel p-4 mt-4 text-start mx-auto" style="max-width:640px">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-7">
+                <h5 class="fw-bold mb-1">@Model.Showtime.Movie.Title</h5>
+                <div class="text-muted small mb-3">@Model.Showtime.Movie.Genre</div>
+
+                <div class="summary-item"><span class="text-muted">Rạp</span><strong>@Model.Showtime.Room.Cinema.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Phòng</span><strong>@Model.Showtime.Room.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Suất chiếu</span><strong>@Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</strong></div>
+                <div class="summary-item"><span class="text-muted">Ghế</span><strong>@string.Join(", ", Model.BookingSeats.OrderBy(bs => bs.Seat.RowNumber).ThenBy(bs => bs.Seat.ColumnNumber).Select(bs => bs.Seat.Code))</strong></div>
+                @if (!string.IsNullOrEmpty(Model.ComboSummary))
+                {
+                    <div class="summary-item"><span class="text-muted">Combo</span><strong>@Model.ComboSummary</strong></div>
+                }
+                <div class="summary-item" style="border-bottom:none">
+                    <span class="fw-bold">TỔNG TIỀN</span>
+                    <span class="font-display fw-bold" style="color:var(--accent-gold);font-size:1.25rem">@Model.TotalAmount.ToString("N0") ₫</span>
+                </div>
+            </div>
+            <div class="col-md-5 text-center">
+                @if (!string.IsNullOrEmpty(Model.QrCodeBase64))
+                {
+                    <div class="qr-box mx-auto">
+                        <img src="data:image/png;base64,@Model.QrCodeBase64" alt="Mã QR vé" />
+                    </div>
+                }
+                <div class="font-display fw-bold mt-3" style="color:var(--accent-gold);letter-spacing:2px;font-size:1.1rem">@Model.BookingCode</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="galaxy-panel p-4 mt-4 mx-auto text-start" style="max-width:640px">
+        <h5 class="font-display mb-3"><i class="bi bi-info-circle me-2" style="color:var(--accent-cyan)"></i>Hướng dẫn thanh toán</h5>
+        <ol class="text-muted mb-3">
+            <li>Chuyển khoản đến tài khoản ngân hàng bên dưới với nội dung: <strong>@Model.BookingCode</strong></li>
+            <li>Nội dung chuyển khoản: <code>VE @Model.BookingCode</code></li>
+            <li>Sau khi thanh toán, nhấn nút <strong>"Tôi đã thanh toán"</strong> để xác nhận.</li>
+        </ol>
+        <div class="summary-item"><span class="text-muted">Số tài khoản</span><strong>1234567890</strong></div>
+        <div class="summary-item"><span class="text-muted">Chủ tài khoản</span><strong>CONG TY CP GALAXY CINEMA</strong></div>
+        <div class="summary-item" style="border-bottom:none"><span class="text-muted">Ngân hàng</span><strong>Vietcombank - Chi nhánh TP.HCM</strong></div>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-center mt-4 flex-wrap">
+        <form method="post" asp-action="PaymentConfirmed" asp-route-code="@Model.BookingCode" class="d-inline">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-cta"><i class="bi bi-check2-circle me-1"></i>Tôi đã thanh toán</button>
+        </form>
+        <a class="btn btn-ghost" asp-controller="Home" asp-action="Index"><i class="bi bi-house me-1"></i>Về trang chủ</a>
+    </div>
+</div>

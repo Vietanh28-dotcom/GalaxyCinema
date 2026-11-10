@@ -1,0 +1,78 @@
+@model List<Combo>
+@{
+    ViewData["Title"] = "Quản lý combo";
+}
+
+<div class="container page-shell">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h1 class="fw-bold mb-0" style="font-size:1.4rem"><i class="bi bi-popcorn me-2" style="color:var(--accent-cyan)"></i>Quản lý combo</h1>
+        <a class="btn btn-cta btn-sm" asp-action="CreateCombo"><i class="bi bi-plus-lg me-1"></i>Thêm combo</a>
+    </div>
+
+    <partial name="_AdminNav" />
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="galaxy-panel p-0 overflow-auto">
+        <table class="table table-galaxy mb-0">
+            <thead>
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Tên combo</th>
+                    <th>Mô tả</th>
+                    <th>Giá</th>
+                    <th>Kích hoạt</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td class="align-middle">
+                            <img src="@(string.IsNullOrEmpty(c.ImageUrl) ? "/img/misc/combo-placeholder.svg" : c.ImageUrl)" alt="@c.Name" style="width:56px;height:56px;object-fit:cover;border-radius:8px" />
+                        </td>
+                        <td class="fw-bold">@c.Name</td>
+                        <td class="text-muted small">@c.Description</td>
+                        <td style="color:var(--accent-gold)">@c.Price.ToString("N0") ₫</td>
+                        <td>
+                            @if (c.IsActive)
+                            {
+                                <span class="badge-status badge-paid">Kích hoạt</span>
+                            }
+                            else
+                            {
+                                <span class="badge-status badge-cancelled">Ẩn</span>
+                            }
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <form asp-action="ToggleCombo" method="post" asp-route-id="@c.Id" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-ghost btn-sm" type="submit" title="@(c.IsActive ? "Ẩn combo" : "Bật combo")">
+                                    <i class="bi @(c.IsActive ? "bi-eye-slash" : "bi-eye")"></i>
+                                </button>
+                            </form>
+                            <a class="btn btn-theme btn-sm" asp-action="EditCombo" asp-route-id="@c.Id"><i class="bi bi-pencil"></i></a>
+                            <form asp-action="DeleteCombo" method="post" asp-route-id="@c.Id" class="d-inline" onsubmit="return confirm('Xóa combo @c.Name?');">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-danger-ghost btn-sm" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">Chưa có combo nào. Bấm "Thêm combo" để tạo.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

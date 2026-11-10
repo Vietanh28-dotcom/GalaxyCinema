@@ -1,0 +1,46 @@
+@model List<Cinema>
+@{
+    ViewData["Title"] = "Hệ thống rạp";
+}
+
+<div class="page-hero">
+    <h1><i class="bi bi-building me-2"></i>HỆ THỐNG RẠP</h1>
+    <p>Ghé thăm các chi nhánh Galaxy Cinema gần bạn nhất</p>
+</div>
+
+<div class="container page-shell">
+    <div class="row g-4">
+        @foreach (var cinema in Model)
+        {
+            <div class="col-md-6">
+                <div class="galaxy-panel p-4 h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h3 class="fw-bold mb-0" style="font-size:1.15rem">@cinema.Name</h3>
+                        <span class="hex-badge"><i class="bi bi-building"></i></span>
+                    </div>
+                    <p class="text-muted mb-1"><i class="bi bi-geo-alt me-2" style="color:var(--accent-cyan)"></i>@cinema.Address</p>
+                    @if (!string.IsNullOrEmpty(cinema.Phone))
+                    {
+                        <p class="text-muted mb-1"><i class="bi bi-telephone me-2" style="color:var(--accent-cyan)"></i>@cinema.Phone</p>
+                    }
+                    <p class="text-muted mb-3"><i class="bi bi-display me-2" style="color:var(--accent-cyan)"></i>@cinema.Rooms.Count phòng chiếu</p>
+                    <div class="ratio ratio-4x3 rounded-3 overflow-hidden mb-3">
+                        <iframe title="Bản đồ @cinema.Name" src="@MapHelper.GetEmbedSrc(cinema)" loading="lazy" style="border:0"></iframe>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-ghost btn-sm" asp-action="Details" asp-route-id="@cinema.Id"><i class="bi bi-info-circle me-1"></i>Xem chi tiết</a>
+                        <a class="btn btn-ghost btn-sm" href="@MapHelper.GetMapLink(cinema)" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Google Maps</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="galaxy-panel mt-4 p-4">
+        <h5 class="font-display mb-3"><i class="bi bi-geo me-2" style="color:var(--accent-cyan)"></i>Vị trí rạp</h5>
+        <div class="ratio-iframe">
+            <iframe title="Bản đồ Galaxy Cinema" src="https://www.openstreetmap.org/export/embed.html?bbox=104.8%2C20.5%2C107.5%2C22.0&layer=mapnik" loading="lazy"></iframe>
+        </div>
+        <p class="text-muted small mt-2 mb-0"><i class="bi bi-info-circle me-1"></i>Bản đồ minh họa. Tại mỗi trang rạp, bạn có thể nhúng bản đồ chi tiết theo địa chỉ cụ thể.</p>
+    </div>
+</div>

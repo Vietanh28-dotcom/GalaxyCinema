@@ -1,0 +1,14 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+    var action = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Index" ? "active" : "")" asp-controller="Admin" asp-action="Index"><i class="bi bi-speedometer2 me-1"></i>Tổng quan</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Movies" ? "active" : "")" asp-controller="Admin" asp-action="Movies"><i class="bi bi-film me-1"></i>Phim</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Showtimes" ? "active" : "")" asp-controller="Admin" asp-action="Showtimes"><i class="bi bi-calendar-week me-1"></i>Suất chiếu</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Cinemas" ? "active" : "")" asp-controller="Admin" asp-action="Cinemas"><i class="bi bi-building me-1"></i>Rạp</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Rooms" ? "active" : "")" asp-controller="Admin" asp-action="Rooms"><i class="bi bi-display me-1"></i>Phòng chiếu</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Seats" ? "active" : "")" asp-controller="Admin" asp-action="Seats"><i class="bi bi-grid-3x3 me-1"></i>Ghế</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && (action == "Combos" || action == "CreateCombo" || action == "EditCombo") ? "active" : "")" asp-controller="Admin" asp-action="Combos"><i class="bi bi-popcorn me-1"></i>Combo</a>
+    <a class="btn btn-ghost btn-sm @(controller == "Admin" && action == "Bookings" ? "active" : "")" asp-controller="Admin" asp-action="Bookings"><i class="bi bi-receipt me-1"></i>Đơn đặt vé</a>
+</div>

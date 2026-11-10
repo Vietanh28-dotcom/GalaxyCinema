@@ -1,0 +1,76 @@
+@model Booking
+@{
+    ViewData["Title"] = "Chi tiết đơn";
+}
+
+<div class="container page-shell" style="max-width:780px">
+    <div class="mb-3">
+        <a asp-action="Bookings" class="text-muted small"><i class="bi bi-arrow-left me-1"></i>Quay lại danh sách</a>
+    </div>
+
+    <div class="galaxy-panel p-4">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+            <div>
+                <h1 class="fw-bold mb-0" style="font-size:1.3rem">Đơn vé <span class="font-display" style="color:var(--accent-cyan)">@Model.BookingCode</span></h1>
+                <div class="text-muted small">Đặt lúc: @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+            </div>
+            @switch (Model.Status)
+            {
+                case BookingStatus.Paid: <span class="badge-status badge-paid">Đã thanh toán</span> break;
+                case BookingStatus.Pending: <span class="badge-status badge-pending">Chờ thanh toán</span> break;
+                default: <span class="badge-status badge-cancelled">Đã hủy</span> break;
+            }
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.QrCodeBase64))
+                {
+                    <div class="qr-box"><img src="data:image/png;base64,@Model.QrCodeBase64" alt="QR" /></div>
+                }
+            </div>
+            <div class="col-md-8">
+                <h5 class="fw-bold mb-1">@Model.Showtime.Movie.Title</h5>
+                <div class="summary-item"><span class="text-muted">Rạp</span><strong>@Model.Showtime.Room.Cinema.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Phòng</span><strong>@Model.Showtime.Room.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Suất chiếu</span><strong>@Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</strong></div>
+                <div class="summary-item"><span class="text-muted">Ghế</span><strong>@string.Join(", ", Model.BookingSeats.OrderBy(bs => bs.Seat.RowNumber).ThenBy(bs => bs.Seat.ColumnNumber).Select(bs => bs.Seat.Code))</strong></div>
+                <div class="summary-item"><span class="text-muted">Khách hàng</span><strong>@Model.CustomerName</strong></div>
+                <div class="summary-item"><span class="text-muted">SĐT / Email</span><strong>@Model.CustomerPhone / @Model.CustomerEmail</strong></div>
+                @if (!string.IsNullOrEmpty(Model.CustomerNote))
+                {
+                    <div class="summary-item"><span class="text-muted">Ghi chú</span><strong>@Model.CustomerNote</strong></div>
+                }
+                @if (!string.IsNullOrEmpty(Model.ComboSummary))
+                {
+                    <div class="summary-item"><span class="text-muted">Combo</span><strong>@Model.ComboSummary</strong></div>
+                }
+                <div class="summary-item"><span class="text-muted">Thanh toán</span><strong>@(Model.PaymentMethod == PaymentMethod.Online ? "Online" : "Tại quầy")</strong></div>
+                <div class="summary-item"><span class="text-muted">Tiền ghế</span><strong>@Model.SeatAmount.ToString("N0") ₫</strong></div>
+                <div class="summary-item"><span class="text-muted">Tiền combo</span><strong>@Model.ComboAmount.ToString("N0") ₫</strong></div>
+                <div class="summary-item" style="border-top:1px solid rgba(255,215,0,0.3);padding-top:0.8rem">
+                    <span class="fw-bold">Tổng tiền</span>
+                    <span class="font-display fw-bold" style="color:var(--accent-gold);font-size:1.2rem">@Model.TotalAmount.ToString("N0") ₫</span>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Status == BookingStatus.Pending)
+        {
+            <form asp-action="MarkPaid" method="post" asp-route-code="@Model.BookingCode" class="d-inline"
+                  onsubmit="return confirm('Xác nhận đã nhận tiền cho đơn @Model.BookingCode?');">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-cta btn-sm" type="submit"><i class="bi bi-cash-coin me-1"></i>Đã nhận tiền</button>
+            </form>
+        }
+
+        @if (Model.Status != BookingStatus.Cancelled)
+        {
+            <form asp-action="CancelBooking" method="post" asp-route-code="@Model.BookingCode" class="mt-4"
+                  onsubmit="return confirm('Xác nhận hủy đơn vé @Model.BookingCode? Ghế sẽ được trả lại.');">
+                @Html.AntiForgeryToken()
+                <button class="btn btn-danger-ghost" type="submit"><i class="bi bi-x-lg me-1"></i>Hủy đơn vé</button>
+            </form>
+        }
+    </div>
+</div>

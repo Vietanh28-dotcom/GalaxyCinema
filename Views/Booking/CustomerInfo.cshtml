@@ -1,0 +1,105 @@
+@model CustomerInfoViewModel
+@{
+    ViewData["Title"] = "Xác nhận đặt vé";
+    ViewData["CurrentStep"] = 4;
+    ViewData["MovieId"] = Model.Showtime.MovieId;
+    var showtime = Model.Showtime;
+}
+
+<div class="container page-shell">
+    <h1 class="fw-bold" style="font-size:1.5rem"><i class="bi bi-clipboard-check me-2" style="color:var(--accent-cyan)"></i>Xác nhận đơn hàng</h1>
+
+    <partial name="_Stepper" />
+
+    @if (ViewBag.ConfirmError != null)
+    {
+        <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>@ViewBag.ConfirmError</div>
+    }
+
+    <div class="row g-4">
+        <!-- Tóm tắt đơn hàng -->
+        <div class="col-lg-5">
+            <div class="galaxy-panel p-4 mb-4">
+                <h5 class="font-display mb-3"><i class="bi bi-receipt me-2" style="color:var(--accent-cyan)"></i>Thông tin suất chiếu</h5>
+                <div class="summary-item"><span class="text-muted">Phim</span><strong>@showtime.Movie.Title</strong></div>
+                <div class="summary-item"><span class="text-muted">Rạp</span><strong>@showtime.Room.Cinema.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Phòng</span><strong>@showtime.Room.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Suất chiếu</span><strong>@showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</strong></div>
+                <div class="summary-item"><span class="text-muted">Ghế</span><strong>@string.Join(", ", Model.SelectedSeats.Select(s => s.Code))</strong></div>
+                <div class="summary-item"><span class="text-muted">Tiền ghế</span><strong style="color:var(--accent-gold)">@Model.SeatTotal.ToString("N0") ₫</strong></div>
+                @if (Model.ComboLines.Count > 0)
+                {
+                    <div class="mt-2">
+                        <div class="text-muted small mb-1">Combo đã chọn:</div>
+                        @foreach (var c in Model.ComboLines)
+                        {
+                            <div class="summary-item"><span>@c.ComboName x@c.Quantity</span><strong style="color:var(--accent-gold)">@c.LineTotal.ToString("N0") ₫</strong></div>
+                        }
+                    </div>
+                }
+                <div class="summary-item mt-2" style="border-top:1px solid rgba(255,215,0,0.3);padding-top:0.8rem">
+                    <span class="fw-bold">TỔNG TIỀN</span>
+                    <span class="font-display fw-bold" style="color:var(--accent-gold);font-size:1.25rem">@Model.TotalAmount.ToString("N0") ₫</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form thông tin khách hàng -->
+        <div class="col-lg-7">
+            <div class="galaxy-panel p-4">
+                <h5 class="font-display mb-3"><i class="bi bi-person me-2" style="color:var(--accent-cyan)"></i>Thông tin khách hàng</h5>
+
+                <form asp-action="CustomerInfo" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="CustomerName" class="form-label"></label>
+                        <input asp-for="CustomerName" class="form-control" placeholder="Nguyễn Văn A" />
+                        <span asp-validation-for="CustomerName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CustomerPhone" class="form-label"></label>
+                            <input asp-for="CustomerPhone" class="form-control" placeholder="0912345678" />
+                            <span asp-validation-for="CustomerPhone" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CustomerEmail" class="form-label"></label>
+                            <input asp-for="CustomerEmail" class="form-control" placeholder="ban@email.com" />
+                            <span asp-validation-for="CustomerEmail" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CustomerNote" class="form-label"></label>
+                        <textarea asp-for="CustomerNote" class="form-control" rows="2" placeholder="Ghi chú thêm (không bắt buộc)"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Phương thức thanh toán</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="PaymentMethod" id="pmCounter" value="AtCounter" checked="@(Model.PaymentMethod == PaymentMethod.AtCounter)" />
+                                <label class="form-check-label" for="pmCounter"><i class="bi bi-shop me-1"></i>Thanh toán tại quầy</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="PaymentMethod" id="pmOnline" value="Online" checked="@(Model.PaymentMethod == PaymentMethod.Online)" />
+                                <label class="form-check-label" for="pmOnline"><i class="bi bi-credit-card me-1"></i>Thanh toán online</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-ghost" asp-action="SelectCombo">Quay lại</a>
+                        <button type="submit" class="btn btn-cta"><i class="bi bi-check2-circle me-1"></i>Xác nhận đặt vé</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

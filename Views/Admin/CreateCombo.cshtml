@@ -1,0 +1,57 @@
+@model Combo
+@{
+    ViewData["Title"] = "Thêm combo";
+}
+
+<div class="container page-shell" style="max-width:720px">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-popcorn me-2" style="color:var(--accent-cyan)"></i>Thêm combo</h1>
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4">
+        <form asp-action="CreateCombo" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Combo Solo" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="2" placeholder="Ví dụ: 1 bắp lớn + 2 nước 22oz"></textarea>
+                <span asp-validation-for="Description" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" type="number" step="1000" min="1" class="form-control" placeholder="89000" />
+                <span asp-validation-for="Price" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ImageUrl" class="form-label">Ảnh combo</label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="/img/combos/combo1.svg hoặc https://..." />
+                <input type="file" name="imageFile" accept="image/*" class="form-control mt-2" onchange="previewComboImage(this)" />
+                <div class="form-text">Chọn ảnh từ máy (tối đa 5MB) hoặc dán đường dẫn ảnh có sẵn.</div>
+                <img id="comboPreview" alt="Xem trước ảnh combo" class="mt-2 rounded" style="display:none;max-width:160px;max-height:160px;object-fit:cover" />
+            </div>
+            <div class="mb-4 form-check form-switch ps-5">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-cta"><i class="bi bi-check-lg me-1"></i>Lưu combo</button>
+                <a class="btn btn-ghost" asp-action="Combos">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function previewComboImage(input) {
+            var img = document.getElementById('comboPreview');
+            if (!img || !input.files || input.files.length === 0) return;
+            img.src = URL.createObjectURL(input.files[0]);
+            img.style.display = 'block';
+        }
+    </script>
+}

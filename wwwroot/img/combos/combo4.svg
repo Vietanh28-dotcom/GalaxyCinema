@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0066ff"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="150" cy="258" rx="46" ry="15" fill="#0d1b2a" opacity="0.5"/>
+  <path d="M118 138 H182 L190 244 H110 Z" fill="url(#g)"/>
+  <path d="M118 138 H182 L180 158 H120 Z" fill="#7be9ff" opacity="0.7"/>
+  <rect x="118" y="62" width="64" height="76" rx="8" fill="none" stroke="#7be9ff" stroke-width="4"/>
+  <path d="M128 60 C128 44 136 34 150 34 C164 34 172 44 172 60" fill="none" stroke="#7be9ff" stroke-width="4"/>
+  <rect x="118" y="128" width="64" height="14" rx="4" fill="#0b6b9e"/>
+  <circle cx="134" cy="188" r="6" fill="#7be9ff"/><circle cx="150" cy="198" r="6" fill="#7be9ff"/><circle cx="166" cy="188" r="6" fill="#7be9ff"/>
+  <text x="150" y="286" text-anchor="middle" font-family="Orbitron,Arial" font-weight="700" font-size="14" fill="#00d4ff" letter-spacing="2">NUOC NGOT</text>
+</svg>

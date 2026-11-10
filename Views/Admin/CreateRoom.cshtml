@@ -1,0 +1,42 @@
+@model Room
+@{
+    ViewData["Title"] = "Thêm phòng chiếu";
+}
+
+<div class="container page-shell" style="max-width:720px">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-display me-2" style="color:var(--accent-cyan)"></i>Thêm phòng chiếu</h1>
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4">
+        <form asp-action="CreateRoom" method="post">
+            <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="CinemaId" class="form-label"></label>
+                <select asp-for="CinemaId" class="form-select" asp-items="@(new SelectList(ViewBag.Cinemas, "Id", "Name"))">
+                    <option value="">-- Chọn chi nhánh --</option>
+                </select>
+                <span asp-validation-for="CinemaId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="Phòng 2D - Sao Đôi" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+<div class="mb-3">
+                    <label asp-for="RoomType" class="form-label"></label>
+                    <select asp-for="RoomType" class="form-select" asp-items="Html.GetEnumSelectList<RoomType>()"></select>
+                </div>
+                <div class="mb-4 text-muted small">
+                    <i class="bi bi-info-circle me-1"></i>Sức chứa phòng sẽ được tự động tính theo số ghế bạn thêm sau đó.
+                </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-cta"><i class="bi bi-check-lg me-1"></i>Lưu phòng</button>
+                <a class="btn btn-ghost" asp-action="Rooms">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

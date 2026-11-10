@@ -1,0 +1,103 @@
+@model SeatMapViewModel
+@{
+    ViewData["Title"] = "Chọn ghế";
+    ViewData["CurrentStep"] = 2;
+    ViewData["MovieId"] = Model.Showtime.MovieId;
+    var showtime = Model.Showtime;
+}
+
+<div class="container page-shell">
+    <div class="mb-3">
+        <a asp-action="SelectShowtime" asp-route-movieId="@showtime.MovieId" class="text-muted small"><i class="bi bi-arrow-left me-1"></i>Quay lại chọn suất chiếu</a>
+    </div>
+    <h1 class="fw-bold" style="font-size:1.5rem"><i class="bi bi-armchair me-2" style="color:var(--accent-cyan)"></i>Chọn ghế</h1>
+    <div class="text-muted mb-4">
+        <i class="bi bi-film me-1"></i>@showtime.Movie.Title &nbsp;|&nbsp;
+        <i class="bi bi-building me-1"></i>@showtime.Room.Cinema.Name &nbsp;|&nbsp;
+        <i class="bi bi-display me-1"></i>@showtime.Room.Name &nbsp;|&nbsp;
+        <i class="bi bi-clock me-1"></i>@showtime.StartTime.ToString("dd/MM/yyyy HH:mm")
+    </div>
+
+    <partial name="_Stepper" />
+
+    @if (TempData["SeatError"] != null)
+    {
+        <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>@TempData["SeatError"]</div>
+    }
+
+    <div id="seat-msg" class="alert alert-danger d-none"></div>
+
+    <form id="seats-form" method="post" asp-action="SelectSeats" asp-route-showtimeId="@showtime.Id">
+        @Html.AntiForgeryToken()
+        <div id="seat-ids-container"></div>
+
+        <div class="galaxy-panel p-4">
+            <div class="screen">MÀN HÌNH</div>
+
+            <div id="seat-map" class="seat-map" data-showtime-id="@showtime.Id">
+                @foreach (var row in Model.Rows)
+                {
+                    <div class="seat-row">
+                        <div class="seat-row-label">@Convert.ToChar('A' + row.Key - 1)</div>
+                        <div class="seat-grid" style="--cols:@Model.MaxColumns">
+                            @foreach (var seat in row.OrderBy(s => s.ColumnNumber))
+                            {
+                                var price = showtime.BasePrice * seat.PriceMultiplier;
+                                var typeClass = seat.SeatType switch
+                                {
+                                    SeatType.Vip => "vip",
+                                    SeatType.Couple => "couple",
+                                    _ => ""
+                                };
+                                var state = Model.OccupiedSeatIds.Contains(seat.Id)
+                                    ? "booked"
+                                    : (Model.OtherLockedSeatIds.Contains(seat.Id) ? "locked"
+                                        : (Model.MyLockedSeatIds.Contains(seat.Id) ? "mine" : "available"));
+                                var stateClass = state switch
+                                {
+                                    "booked" => "booked",
+                                    "mine" => "selected mine",
+                                    "locked" => "locked-other",
+                                    _ => ""
+                                };
+                                <button type="button"
+                                        class="seat @typeClass @stateClass"
+                                        data-id="@seat.Id"
+                                        data-code="@seat.Code"
+                                        data-price="@price.ToString(System.Globalization.CultureInfo.InvariantCulture)"
+                                        data-state="@state"
+                                        title="@seat.Code - @(seat.SeatType == SeatType.Vip ? "VIP" : seat.SeatType == SeatType.Couple ? "Đôi" : "Thường")">
+                                    <span>@seat.Code</span>
+                                </button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="seat-legend">
+                <span class="lg"><span class="dot" style="background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.15)"></span>Trống</span>
+                <span class="lg"><span class="dot" style="background:linear-gradient(135deg,var(--accent-gold),#ff8c00)"></span>Đang chọn</span>
+                <span class="lg"><span class="dot" style="background:rgba(0,212,255,0.12);border-color:var(--accent-cyan)"></span>Đang được giữ</span>
+                <span class="lg"><span class="dot" style="background:rgba(237,29,36,0.14);border-color:rgba(237,29,36,0.45)"></span>Đã đặt</span>
+                <span class="lg"><span class="dot" style="background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,165,0,0.15));border-color:rgba(255,215,0,0.5)"></span>VIP</span>
+                <span class="lg"><span class="dot" style="background:linear-gradient(135deg,rgba(255,42,109,0.25),rgba(123,47,247,0.2));border-color:rgba(255,92,144,0.5)"></span>Ghế đôi</span>
+            </div>
+        </div>
+
+        <div class="galaxy-panel p-3 mt-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <div class="text-muted small">Đã chọn <strong id="seat-count" style="color:var(--accent-gold)">0</strong> ghế</div>
+                <div class="font-display fw-bold" style="font-size:1.3rem">Tổng tiền: <span id="seat-total" style="color:var(--accent-gold)">0 ₫</span></div>
+            </div>
+            <div class="d-flex gap-2">
+                <a class="btn btn-ghost" asp-action="SelectShowtime" asp-route-movieId="@showtime.MovieId">Quay lại</a>
+                <button type="submit" id="btn-continue" class="btn btn-cta" disabled><i class="bi bi-arrow-right me-1"></i>Tiếp tục chọn combo</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/seats.js" asp-append-version="true"></script>
+}

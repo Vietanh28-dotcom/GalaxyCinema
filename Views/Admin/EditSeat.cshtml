@@ -1,0 +1,47 @@
+@model Seat
+@{
+    ViewData["Title"] = "Sửa ghế";
+    var room = (Room)ViewBag.Room;
+}
+
+<div class="container page-shell" style="max-width:720px">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-grid-3x3 me-2" style="color:var(--accent-cyan)"></i>Sửa ghế - @room.Name</h1>
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4">
+        <form asp-action="EditSeat" method="post">
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="RoomId" type="hidden" />
+            <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Code" class="form-label"></label>
+                    <input asp-for="Code" class="form-control" />
+                    <span asp-validation-for="Code" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="RowNumber" class="form-label"></label>
+                    <input asp-for="RowNumber" type="number" class="form-control" />
+                    <span asp-validation-for="RowNumber" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="ColumnNumber" class="form-label"></label>
+                    <input asp-for="ColumnNumber" type="number" class="form-control" />
+                    <span asp-validation-for="ColumnNumber" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="SeatType" class="form-label"></label>
+                    <select asp-for="SeatType" class="form-select" asp-items="Html.GetEnumSelectList<SeatType>()"></select>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-cta"><i class="bi bi-check-lg me-1"></i>Lưu thay đổi</button>
+                    <a class="btn btn-ghost" asp-action="Seats" asp-route-roomId="@Model.RoomId">Hủy</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

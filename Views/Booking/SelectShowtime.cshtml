@@ -1,0 +1,133 @@
+@model SelectShowtimeViewModel
+@{
+    ViewData["Title"] = "Chọn suất chiếu";
+    ViewData["CurrentStep"] = 1;
+    ViewData["MovieId"] = Model.Movie.Id;
+}
+
+<div class="container page-shell">
+    <div class="mb-3">
+        <a asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Movie.Id" class="text-muted small"><i class="bi bi-arrow-left me-1"></i>Quay lại trang phim</a>
+    </div>
+    <h1 class="fw-bold" style="font-size:1.5rem"><i class="bi bi-calendar-check me-2" style="color:var(--accent-cyan)"></i>@Model.Movie.Title</h1>
+    <div class="text-muted mb-4">@Model.Movie.Genre &nbsp;|&nbsp; @Model.Movie.DurationMinutes phút</div>
+
+    <partial name="_Stepper" />
+
+    <!-- Bước 1a: Chọn rạp -->
+    <h5 class="font-display mb-3"><span class="hex-badge me-2">1</span>Chọn rạp chiếu</h5>
+    <div class="row g-3 mb-4">
+        @foreach (var c in Model.Cinemas)
+        {
+            <div class="col-md-6 col-lg-4">
+                <a class="cinema-pick d-block @(Model.SelectedCinemaId == c.Id ? "active" : "")"
+                   asp-action="SelectShowtime" asp-route-movieId="@Model.Movie.Id" asp-route-cinemaId="@c.Id">
+                    <div class="fw-bold">@c.Name</div>
+                    <div class="small text-muted">@c.Address</div>
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (Model.SelectedCinemaId.HasValue && Model.SelectedCinemaId > 0)
+    {
+        <!-- Bước 1b: Chọn ngày -->
+        <h5 class="font-display mb-3"><span class="hex-badge me-2">2</span>Chọn ngày xem</h5>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+            @if (Model.AvailableDates.Count == 0)
+            {
+                <div class="alert alert-info mb-0">Rạp này chưa có suất chiếu của phim trong 7 ngày tới.</div>
+            }
+            @foreach (var d in Model.AvailableDates)
+            {
+                var days = (d - VnTime.Today).Days;
+                var thu = d.DayOfWeek switch
+                {
+                    DayOfWeek.Monday => "T2",
+                    DayOfWeek.Tuesday => "T3",
+                    DayOfWeek.Wednesday => "T4",
+                    DayOfWeek.Thursday => "T5",
+                    DayOfWeek.Friday => "T6",
+                    DayOfWeek.Saturday => "T7",
+                    _ => "CN"
+                };
+                <a class="date-chip @(Model.SelectedDate.HasValue && Model.SelectedDate.Value.Date == d.Date ? "active" : "")"
+                   asp-action="SelectShowtime" asp-route-movieId="@Model.Movie.Id"
+                   asp-route-cinemaId="@Model.SelectedCinemaId" asp-route-date="@d.ToString("yyyy-MM-dd")" asp-route-format="@Model.Format">
+                    <span class="text-muted small d-block">@thu</span>
+                    <span class="d-num">@d.Day</span>
+                    <span class="text-muted small d-block">@(days == 0 ? "Hôm nay" : days == 1 ? "Ngày mai" : $"Tháng {d.Month}")</span>
+                </a>
+            }
+        </div>
+
+        <!-- Bước 1c: Chọn suất chiếu -->
+        <h5 class="font-display mb-3"><span class="hex-badge me-2">3</span>Chọn suất chiếu</h5>
+        @if (Model.AvailableFormats.Count > 0)
+        {
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                <span class="text-muted small me-lg-1"><i class="bi bi-collection-play me-1"></i>Định dạng:</span>
+                <a class="format-chip @(Model.Format == null ? "active" : "")"
+                   asp-action="SelectShowtime" asp-route-movieId="@Model.Movie.Id"
+                   asp-route-cinemaId="@Model.SelectedCinemaId" asp-route-date="@(Model.SelectedDate?.ToString("yyyy-MM-dd"))">Tất cả</a>
+                @foreach (var f in Model.AvailableFormats)
+                {
+                    var flabel = ((RoomType)f) switch
+                    {
+                        RoomType.Standard3D => "3D",
+                        RoomType.IMAX => "IMAX",
+                        _ => "2D"
+                    };
+                    <a class="format-chip @(Model.Format == f ? "active" : "")"
+                       asp-action="SelectShowtime" asp-route-movieId="@Model.Movie.Id"
+                       asp-route-cinemaId="@Model.SelectedCinemaId" asp-route-date="@(Model.SelectedDate?.ToString("yyyy-MM-dd"))" asp-route-format="@f">@flabel</a>
+                }
+            </div>
+        }
+        @if (Model.Showtimes.Count == 0)
+        {
+            <div class="alert alert-info"><i class="bi bi-calendar-x me-2"></i>Chưa có suất chiếu cho ngày đã chọn.</div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-2 mb-4">
+                @foreach (var st in Model.Showtimes)
+                {
+                    var isPast = st.StartTime < VnTime.Now;
+                    <div class="showtime-card @(isPast ? "opacity-50" : "")">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="showtime-time">@st.StartTime.ToString("HH:mm")</div>
+                            <div>
+                                <div class="fw-bold">@st.Room.Name</div>
+                                <div class="showtime-room">
+                                    @switch (st.Room.RoomType)
+                                    {
+                                        case RoomType.IMAX: <span>IMAX</span> break;
+                                        case RoomType.Standard3D: <span>3D</span> break;
+                                        default: <span>2D</span> break;
+                                    }
+                                    &nbsp;|&nbsp; @st.Room.Cinema.Name
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="font-display fw-bold" style="color:var(--accent-gold)">@st.BasePrice.ToString("N0") ₫</div>
+                            @if (isPast)
+                            {
+                                <span class="badge-status badge-cancelled">Đã qua giờ</span>
+                            }
+                            else
+                            {
+                                <a class="btn btn-cta btn-sm" asp-action="SelectSeats" asp-route-showtimeId="@st.Id"><i class="bi bi-armchair me-1"></i>Chọn ghế</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info"><i class="bi bi-building me-2"></i>Vui lòng chọn một chi nhánh rạp để xem lịch chiếu.</div>
+    }
+</div>

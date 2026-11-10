@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#e08b00"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="150" cy="255" rx="58" ry="18" fill="#0d1b2a" opacity="0.5"/>
+  <path d="M105 210 L95 250 H205 L195 210 Z" fill="#c94f1f"/>
+  <path d="M95 250 Q150 268 205 250 L205 268 Q150 284 95 268 Z" fill="#a53a12"/>
+  <path d="M100 208 L110 128 H190 L200 208 Z" fill="url(#g)"/>
+  <path d="M112 132 C110 118 122 112 122 112 C128 104 142 104 142 104 C150 98 160 102 160 102 C170 100 178 110 178 110 C186 110 186 122 186 122 C192 128 190 134 190 134 Z" fill="#ffe28a"/>
+  <circle cx="130" cy="180" r="5" fill="#c94f1f"/><circle cx="150" cy="190" r="5" fill="#c94f1f"/><circle cx="172" cy="180" r="5" fill="#c94f1f"/>
+  <text x="150" y="115" text-anchor="middle" font-family="Orbitron,Arial" font-weight="700" font-size="17" fill="#ffd700" letter-spacing="1">BAP NGO</text>
+</svg>

@@ -1,0 +1,127 @@
+﻿<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 900'>
+<defs>
+<linearGradient id='bg' x1='0' y1='0' x2='0.9' y2='1'>
+<stop offset='0%' stop-color='#1a0b3f'/><stop offset='60%' stop-color='#ed1d24'/><stop offset='100%' stop-color='#05070f'/>
+</linearGradient>
+<radialGradient id='glow' cx='0.5' cy='0.45' r='0.6'>
+<stop offset='0%' stop-color='#ffd700' stop-opacity='0.35'/><stop offset='100%' stop-color='#ffd700' stop-opacity='0'/>
+</radialGradient>
+</defs>
+<rect width='600' height='900' fill='url(#bg)'/>
+<rect width='600' height='900' fill='url(#glow)'/>
+<circle cx='384' cy='184' r='77' fill='#ffd700' opacity='0.06'/>
+<circle cx='134' cy='274' r='161' fill='#ffd700' opacity='0.06'/>
+<circle cx='136' cy='643' r='92' fill='#ed1d24' opacity='0.06'/>
+<circle cx='302' cy='316' r='113' fill='#ed1d24' opacity='0.06'/>
+<circle cx='308' cy='106' r='173' fill='#ffd700' opacity='0.06'/>
+<circle cx='248' cy='192' r='72' fill='#ffffff' opacity='0.06'/>
+<circle cx='486' cy='485' r='0.4' fill='#ffd700' opacity='0.8'/>
+<circle cx='92' cy='811' r='1.4' fill='#ffd700' opacity='0.8'/>
+<circle cx='114' cy='41' r='0.8' fill='#ffd700' opacity='0.8'/>
+<circle cx='489' cy='8' r='1.2' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='446' cy='347' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='35' cy='700' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='152' cy='692' r='0.8' fill='#ffd700' opacity='0.8'/>
+<circle cx='89' cy='44' r='1.3' fill='#ffd700' opacity='0.8'/>
+<circle cx='34' cy='379' r='1.4' fill='#ffd700' opacity='0.8'/>
+<circle cx='133' cy='16' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='45' cy='644' r='0.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='12' cy='715' r='1' fill='#ffd700' opacity='0.8'/>
+<circle cx='299' cy='12' r='1.6' fill='#ffffff' opacity='0.8'/>
+<circle cx='6' cy='61' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='543' cy='831' r='1' fill='#ffffff' opacity='0.8'/>
+<circle cx='368' cy='44' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='262' cy='710' r='1.2' fill='#ffffff' opacity='0.8'/>
+<circle cx='180' cy='812' r='1.2' fill='#ffd700' opacity='0.8'/>
+<circle cx='16' cy='789' r='1.8' fill='#ffffff' opacity='0.8'/>
+<circle cx='424' cy='149' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='201' cy='695' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='132' cy='531' r='1.1' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='457' cy='603' r='1.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='330' cy='885' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='208' cy='831' r='0.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='161' cy='39' r='0.6' fill='#ffd700' opacity='0.8'/>
+<circle cx='254' cy='88' r='1.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='67' cy='290' r='0.8' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='492' cy='13' r='0.4' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='533' cy='216' r='1.8' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='169' cy='490' r='1.3' fill='#ffd700' opacity='0.8'/>
+<circle cx='118' cy='269' r='0.6' fill='#ffffff' opacity='0.8'/>
+<circle cx='141' cy='835' r='1.9' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='84' cy='791' r='0.6' fill='#ffffff' opacity='0.8'/>
+<circle cx='335' cy='500' r='1.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='357' cy='353' r='1.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='210' cy='862' r='1' fill='#ffd700' opacity='0.8'/>
+<circle cx='564' cy='726' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='6' cy='166' r='1.8' fill='#ffd700' opacity='0.8'/>
+<circle cx='243' cy='530' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='542' cy='862' r='1.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='201' cy='487' r='1.3' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='490' cy='670' r='0.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='315' cy='720' r='0.7' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='397' cy='173' r='0.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='496' cy='574' r='0.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='480' cy='788' r='1.5' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='561' cy='420' r='1.7' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='97' cy='527' r='0.6' fill='#ffd700' opacity='0.8'/>
+<circle cx='300' cy='635' r='0.5' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='210' cy='468' r='1.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='317' cy='706' r='1.2' fill='#ffffff' opacity='0.8'/>
+<circle cx='556' cy='51' r='0.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='190' cy='157' r='0.8' fill='#ffffff' opacity='0.8'/>
+<circle cx='525' cy='423' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='455' cy='594' r='1.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='510' cy='282' r='0.6' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='354' cy='550' r='0.9' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='51' cy='424' r='1.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='547' cy='789' r='1.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='181' cy='521' r='0.3' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='247' cy='606' r='1.3' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='179' cy='842' r='1.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='206' cy='589' r='0.4' fill='#ffd700' opacity='0.8'/>
+<circle cx='312' cy='329' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='362' cy='577' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='397' cy='93' r='0.5' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='176' cy='876' r='0.9' fill='#ffffff' opacity='0.8'/>
+<circle cx='346' cy='317' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='384' cy='101' r='1.8' fill='#ffffff' opacity='0.8'/>
+<circle cx='391' cy='181' r='1.3' fill='#ffd700' opacity='0.8'/>
+<circle cx='512' cy='322' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='257' cy='178' r='1.6' fill='#ffd700' opacity='0.8'/>
+<circle cx='322' cy='603' r='1' fill='#ffd700' opacity='0.8'/>
+<circle cx='580' cy='625' r='0.7' fill='#ffffff' opacity='0.8'/>
+<circle cx='323' cy='728' r='1.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='352' cy='673' r='1' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='301' cy='769' r='0.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='252' cy='150' r='1.2' fill='#ffffff' opacity='0.8'/>
+<circle cx='6' cy='853' r='1' fill='#ffffff' opacity='0.8'/>
+<circle cx='290' cy='641' r='1' fill='#ffffff' opacity='0.8'/>
+<circle cx='116' cy='714' r='1' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='559' cy='450' r='0.6' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='525' cy='568' r='1.3' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='302' cy='293' r='0.4' fill='#ffffff' opacity='0.8'/>
+<circle cx='538' cy='561' r='1.8' fill='#ffd700' opacity='0.8'/>
+<circle cx='95' cy='340' r='0.5' fill='#ffffff' opacity='0.8'/>
+<circle cx='69' cy='9' r='1.3' fill='#ffffff' opacity='0.8'/>
+<circle cx='143' cy='820' r='1.6' fill='#8ee8ff' opacity='0.8'/>
+<circle cx='240' cy='537' r='0.5' fill='#8ee8ff' opacity='0.8'/>
+<path d='M185 467 L 201.53 476.5 L 201.53 495.5 L 185 505 L 168.47 495.5 L 168.47 476.5 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M30 553 L 47.4 563 L 47.4 583 L 30 593 L 12.6 583 L 12.6 563 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M316 653 L 343.84 669 L 343.84 701 L 316 717 L 288.16 701 L 288.16 669 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M418 743 L 449.32 761 L 449.32 797 L 418 815 L 386.68 797 L 386.68 761 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M510 299 L 535.23 313.5 L 535.23 342.5 L 510 357 L 484.77 342.5 L 484.77 313.5 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M493 651 L 528.67 671.5 L 528.67 712.5 L 493 733 L 457.33 712.5 L 457.33 671.5 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M538 669 L 569.32 687 L 569.32 723 L 538 741 L 506.68 723 L 506.68 687 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M78 650 L 116.28 672 L 116.28 716 L 78 738 L 39.72 716 L 39.72 672 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M487 156 L 519.19 174.5 L 519.19 211.5 L 487 230 L 454.81 211.5 L 454.81 174.5 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M551 661 L 585.8 681 L 585.8 721 L 551 741 L 516.2 721 L 516.2 681 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M269 760 L 289.01 771.5 L 289.01 794.5 L 269 806 L 248.99 794.5 L 248.99 771.5 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<path d='M176 684 L 200.36 698 L 200.36 726 L 176 740 L 151.64 726 L 151.64 698 Z' fill='none' stroke='#ffd700' stroke-opacity='0.14' stroke-width='1.4'/>
+<g transform='translate(300,330)'>
+<path d='M0 -150 L48 -42 L160 -42 L72 26 L104 150 L0 82 L-104 150 L-72 26 L-160 -42 L-48 -42 Z' fill='none' stroke='#ffd700' stroke-opacity='0.5' stroke-width='3'/>
+<path d='M0 -100 L34 -28 L112 -28 L50 18 L72 100 L0 54 L-72 100 L-50 18 L-112 -28 L-34 -28 Z' fill='#ffd700' fill-opacity='0.16' stroke='#ffd700' stroke-opacity='0.9' stroke-width='2.5'/>
+</g>
+<text x='300' y='620' text-anchor='middle' font-family='Orbitron,Arial,sans-serif' font-weight='800' font-size='40' letter-spacing='4' fill='#ffffff' stroke='#000000' stroke-opacity='0.35' stroke-width='1'>CUOC CHIENLIEN NGAN HA</text>
+<rect x='150' y='800' width='300' height='46' rx='8' fill='none' stroke='#ffd700' stroke-opacity='0.55' stroke-width='1.6'/>
+<text x='300' y='830' text-anchor='middle' font-family='Orbitron,Arial,sans-serif' font-size='17' letter-spacing='6' fill='#ffd700'>GALAXY CINEMA</text>
+</svg>

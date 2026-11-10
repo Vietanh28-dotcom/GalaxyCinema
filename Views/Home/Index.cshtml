@@ -1,0 +1,107 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- ============ HERO SLIDER ============ -->
+<section class="container page-shell">
+    <div class="hero-slider">
+        @for (int i = 0; i < Model.FeaturedMovies.Count; i++)
+        {
+            var m = Model.FeaturedMovies[i];
+            <div class="hero-slide @(i == 0 ? "active" : "")">
+                <div class="hero-content">
+                    <div class="hero-info">
+                        <span class="hero-tag"><i class="bi bi-stars me-1"></i>PHIM NỔI BẬT TUẦN NÀY</span>
+                        <h2>@m.Title</h2>
+                        <div class="hero-genre"><i class="bi bi-film me-1"></i>@m.Genre &nbsp;|&nbsp; <i class="bi bi-clock me-1"></i>@m.DurationMinutes phút</div>
+                        <p class="hero-desc">@m.Description</p>
+                        <div class="d-flex gap-2 mt-3 flex-wrap">
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <a class="btn btn-cta" asp-controller="Booking" asp-action="SelectShowtime" asp-route-movieId="@m.Id"><i class="bi bi-ticket-perforated me-1"></i>Đặt vé ngay</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-cta" asp-area="Identity" asp-page="/Account/Login"
+                                   asp-route-returnUrl="@Url.Action("SelectShowtime", "Booking", new { movieId = m.Id })"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập để đặt vé</a>
+                            }
+                            <a class="btn btn-ghost" asp-controller="Movie" asp-action="Details" asp-route-id="@m.Id">Xem chi tiết</a>
+                        </div>
+                    </div>
+                    <div class="hero-post">
+                        <img src="@m.PosterUrl" alt="@m.Title" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="hero-dots" role="tablist" aria-label="Chọn phim nổi bật"></div>
+</section>
+
+<!-- ============ PHIM ĐANG CHIẾU ============ -->
+<section class="container mt-5">
+    <div class="section-title d-flex align-items-end justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="kicker">NOW SHOWING</div>
+            <h2>Phim đang chiếu</h2>
+            <div class="section-divider"></div>
+        </div>
+        <a class="btn btn-ghost btn-sm" asp-controller="Movie" asp-action="Index" asp-route-status="1">Xem tất cả <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="row g-4">
+        @foreach (var m in Model.NowShowing)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <partial name="_MovieCard" model="m" />
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ============ PHIM SẮP CHIẾU ============ -->
+<section class="container mt-5">
+    <div class="section-title d-flex align-items-end justify-content-between flex-wrap gap-2">
+        <div>
+            <div class="kicker">COMING SOON</div>
+            <h2>Phim sắp chiếu</h2>
+            <div class="section-divider"></div>
+        </div>
+        <a class="btn btn-ghost btn-sm" asp-controller="Movie" asp-action="Index" asp-route-status="2">Xem tất cả <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="row g-4">
+        @foreach (var m in Model.ComingSoon)
+        {
+            <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                <partial name="_MovieCard" model="m" />
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ============ TRẢI NGHIỆM ============ -->
+<section class="container mt-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="info-card text-center">
+                <div class="info-icon"><i class="bi bi-vr"></i></div>
+                <h4 class="mt-2">Công nghệ hiện đại</h4>
+                <p class="text-muted mb-0">Phòng chiếu IMAX, 3D và âm thanh vòm tiêu chuẩn mới nhất, mang đến trải nghiệm vũ trụ điện ảnh chân thực.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card text-center">
+                <div class="info-icon"><i class="bi bi-ticket-perforated"></i></div>
+                <h4 class="mt-2">Đặt vé online</h4>
+                <p class="text-muted mb-0">Chọn ghế trực tiếp trên sơ đồ, nhận mã QR ngay lập tức, không cần xếp hàng tại quầy.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="info-card text-center">
+                <div class="info-icon"><i class="bi bi-popcorn"></i></div>
+                <h4 class="mt-2">Bắp nước combo</h4>
+                <p class="text-muted mb-0">Kết hợp combo bắp nước yêu thích ngay trong lúc đặt vé với ưu đãi hấp dẫn.</p>
+            </div>
+        </div>
+    </div>
+</section>

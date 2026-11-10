@@ -1,0 +1,41 @@
+@model Cinema
+@{
+    ViewData["Title"] = "Thêm rạp";
+}
+
+<div class="container page-shell" style="max-width:720px">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-building me-2" style="color:var(--accent-cyan)"></i>Thêm rạp</h1>
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4">
+        <form asp-action="CreateCinema" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <div class="mb-4">
+                <label asp-for="MapEmbedUrl" class="form-label"></label>
+                <input asp-for="MapEmbedUrl" class="form-control" placeholder="https://www.google.com/maps/embed?..." />
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-cta"><i class="bi bi-check-lg me-1"></i>Lưu rạp</button>
+                <a class="btn btn-ghost" asp-action="Cinemas">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

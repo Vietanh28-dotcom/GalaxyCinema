@@ -1,0 +1,56 @@
+@model Booking
+@{
+    ViewData["Title"] = "Đặt vé thành công";
+    var isPaid = Model.Status == BookingStatus.Paid;
+}
+
+<div class="container page-shell text-center">
+    <div class="error-orb" style="color:var(--accent-gold);font-size:3.4rem"><i class="bi bi-check2-circle"></i></div>
+    <h1 class="fw-bold mt-2">Đặt vé thành công!</h1>
+    @if (Model.PaymentMethod == PaymentMethod.AtCounter && !isPaid)
+    {
+        <p class="text-muted">Vé của bạn đang ở trạng thái <strong class="text-warning">chưa thanh toán</strong>. Vui lòng đến quầy thanh toán và mang mã vé <strong>@Model.BookingCode</strong> để nhận vé.</p>
+    }
+    else if (Model.PaymentMethod == PaymentMethod.Online)
+    {
+        <p class="text-muted">Vé của bạn đã được xác nhận thanh toán online. Hãy mang mã QR dưới đây đến quầy để soát vé.</p>
+    }
+    else
+    {
+        <p class="text-muted">Vé của bạn đã được xác nhận. Hãy mang mã QR dưới đây đến quầy để được soát vé. <br/>Thông tin chi tiết cũng đã được gửi tới email <strong>@Model.CustomerEmail</strong>.</p>
+    }
+
+    <div class="ticket galaxy-panel p-4 mt-4 text-start mx-auto" style="max-width:640px">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-5 text-center">
+                <div class="qr-box">
+                    <img src="data:image/png;base64,@Model.QrCodeBase64" alt="Mã QR vé" />
+                </div>
+                <div class="font-display fw-bold mt-3" style="color:var(--accent-gold);letter-spacing:2px">@Model.BookingCode</div>
+            </div>
+            <div class="col-md-7">
+                <h5 class="fw-bold mb-1">@Model.Showtime.Movie.Title</h5>
+                <div class="text-muted small mb-3">@Model.Showtime.Movie.Genre</div>
+
+                <div class="summary-item"><span class="text-muted">Rạp</span><strong>@Model.Showtime.Room.Cinema.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Phòng</span><strong>@Model.Showtime.Room.Name</strong></div>
+                <div class="summary-item"><span class="text-muted">Suất chiếu</span><strong>@Model.Showtime.StartTime.ToString("dd/MM/yyyy HH:mm")</strong></div>
+                <div class="summary-item"><span class="text-muted">Ghế</span><strong>@string.Join(", ", Model.BookingSeats.OrderBy(bs => bs.Seat.RowNumber).ThenBy(bs => bs.Seat.ColumnNumber).Select(bs => bs.Seat.Code))</strong></div>
+                @if (!string.IsNullOrEmpty(Model.ComboSummary))
+                {
+                    <div class="summary-item"><span class="text-muted">Combo</span><strong>@Model.ComboSummary</strong></div>
+                }
+                <div class="summary-item"><span class="text-muted">Khách hàng</span><strong>@Model.CustomerName (@Model.CustomerPhone)</strong></div>
+                <div class="summary-item" style="border-bottom:none">
+                    <span class="fw-bold">Tổng tiền</span>
+                    <span class="font-display fw-bold" style="color:var(--accent-gold)">@Model.TotalAmount.ToString("N0") ₫</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-center mt-4 flex-wrap">
+        <a class="btn btn-cta" asp-controller="Home" asp-action="Index"><i class="bi bi-house me-1"></i>Về trang chủ</a>
+        <a class="btn btn-ghost" asp-controller="Movie" asp-action="Index">Xem phim khác</a>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+@model Movie
+
+<div class="movie-card">
+    <div class="movie-poster">
+        @if (Model.Status == MovieStatus.NowShowing)
+        {
+            <span class="movie-status-badge badge-now">Đang chiếu</span>
+        }
+        else
+        {
+            <span class="movie-status-badge badge-coming">Sắp chiếu</span>
+        }
+        <img src="@(string.IsNullOrEmpty(Model.PosterUrl) ? "/img/misc/poster-placeholder.svg" : Model.PosterUrl)" alt="@Model.Title" loading="lazy" />
+        <div class="movie-overlay">
+            @if (Model.Status == MovieStatus.NowShowing)
+            {
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-cta" asp-controller="Booking" asp-action="SelectShowtime" asp-route-movieId="@Model.Id"><i class="bi bi-ticket-perforated me-1"></i>Đặt vé ngay</a>
+                }
+                else
+                {
+                    <a class="btn btn-cta" asp-area="Identity" asp-page="/Account/Login"
+                       asp-route-returnUrl="@Url.Action("SelectShowtime", "Booking", new { movieId = Model.Id })"><i class="bi bi-box-arrow-in-right me-1"></i>Đăng nhập để đặt vé</a>
+                }
+            }
+            else
+            {
+                <span class="btn btn-cta disabled" style="opacity:.6"><i class="bi bi-clock me-1"></i>Sắp khởi chiếu</span>
+            }
+            <a class="btn btn-ghost" asp-controller="Movie" asp-action="Details" asp-route-id="@Model.Id"><i class="bi bi-eye me-1"></i>Xem chi tiết</a>
+        </div>
+    </div>
+    <div class="movie-meta">
+        <h3 title="@Model.Title">@Model.Title</h3>
+        @if (Model.Rating > 0)
+        {
+            <div class="rating-inline mb-1"><i class="bi bi-star-fill"></i><span>@Model.Rating.ToString("0.0")</span><span class="rating-max">/10</span></div>
+        }
+        <div class="movie-genre"><i class="bi bi-film me-1"></i>@Model.Genre</div>
+    </div>
+</div>

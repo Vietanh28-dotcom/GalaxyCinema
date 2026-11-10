@@ -1,0 +1,48 @@
+@page
+@model GalaxyCinema.Areas.Identity.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Đăng nhập";
+    var returnUrl = Request.Query["returnUrl"].ToString();
+}
+
+<div class="auth-hero" aria-hidden="true"></div>
+<div class="container page-shell auth-page-container d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 200px);">
+    <div class="auth-card p-4 w-100" style="max-width:420px;">
+        <h2 class="text-center display-6 font-display mb-3" style="color:var(--accent-red)">ĐĂNG NHẬP</h2>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger small mb-3" })
+
+        @if (!string.IsNullOrEmpty(Model.ReturnUrl) && Model.ReturnUrl.Contains("/Booking", StringComparison.OrdinalIgnoreCase))
+        {
+            <div class="alert alert-info small py-2">
+                <i class="bi bi-shield-lock me-1"></i>Vui lòng đăng nhập để xem ghế trống và đặt vé.
+            </div>
+        }
+
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="ReturnUrl" value="@returnUrl" />
+
+            <div class="mb-3">
+                <label for="Input_Email" class="form-label text-muted">Email</label>
+                <input id="Input_Email" name="Input.Email" type="email" class="form-control form-control-lg input-glass" />
+            </div>
+
+            <div class="mb-3">
+                <label for="Input_Password" class="form-label text-muted">Mật khẩu</label>
+                <input id="Input_Password" name="Input.Password" type="password" class="form-control form-control-lg input-glass" />
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input id="Input_RememberMe" name="Input.RememberMe" type="checkbox" class="form-check-input" />
+                    <label for="Input_RememberMe" class="form-check-label text-muted">Ghi nhớ tài khoản</label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary-red w-100 mb-3">Đăng nhập</button>
+
+            <div class="text-center text-muted small">Bạn chưa có tài khoản? <a asp-area="Identity" asp-page="/Account/Register" class="link-highlight">Đăng ký ngay</a></div>
+        </form>
+    </div>
+</div>

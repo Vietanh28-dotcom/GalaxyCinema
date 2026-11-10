@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="cup" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe4a3"/><stop offset="100%" stop-color="#d98a1f"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="150" cy="258" rx="58" ry="16" fill="#0d1b2a" opacity="0.5"/>
+  <path d="M112 150 H188 L196 232 H104 Z" fill="url(#cup)"/>
+  <path d="M112 150 H188 L186 166 H114 Z" fill="#ffd700" opacity="0.6"/>
+  <path d="M108 232 Q150 246 192 232 L192 252 Q150 266 108 252 Z" fill="#b86912"/>
+  <rect x="122" y="176" width="56" height="20" rx="4" fill="#7b2ff7"/>
+  <text x="150" y="190" text-anchor="middle" font-family="Orbitron,Arial" font-weight="700" font-size="11" fill="#fff">CARAMEL</text>
+  <circle cx="118" cy="150" r="14" fill="#ff8c42" opacity="0.9"/>
+  <circle cx="150" cy="142" r="16" fill="#ffa55e" opacity="0.9"/>
+  <circle cx="182" cy="150" r="14" fill="#ff8c42" opacity="0.9"/>
+  <circle cx="133" cy="134" r="10" fill="#ffc27a" opacity="0.9"/>
+  <circle cx="167" cy="134" r="10" fill="#ffc27a" opacity="0.9"/>
+</svg>

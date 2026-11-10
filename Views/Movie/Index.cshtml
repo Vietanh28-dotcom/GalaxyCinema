@@ -1,0 +1,51 @@
+@model MovieIndexViewModel
+@{
+    ViewData["Title"] = "Phim";
+}
+
+<div class="page-hero">
+    <h1><i class="bi bi-film me-2"></i>THƯ VIỆN PHIM</h1>
+    <p>Khám phá thế giới điện ảnh đang chiếu và sắp ra mắt tại Galaxy Cinema</p>
+</div>
+
+<div class="container page-shell">
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-md-4">
+            <label class="form-label">Thể loại</label>
+            <select name="genre" class="form-select">
+                <option value="">Tất cả thể loại</option>
+                @foreach (var g in Model.Genres)
+                {
+                    <option value="@g" selected="@(Model.SelectedGenre == g)">@g</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Trạng thái</label>
+            <select name="status" class="form-select">
+                <option value="">Tất cả trạng thái</option>
+                <option value="1" selected="@(Model.SelectedStatus == MovieStatus.NowShowing)">Đang chiếu</option>
+                <option value="2" selected="@(Model.SelectedStatus == MovieStatus.ComingSoon)">Sắp chiếu</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-theme w-100" type="submit"><i class="bi bi-funnel me-1"></i>Lọc phim</button>
+        </div>
+    </form>
+
+    @if (Model.Movies.Count == 0)
+    {
+        <div class="alert alert-info text-center"><i class="bi bi-search me-2"></i>Không tìm thấy phim phù hợp với bộ lọc.</div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var m in Model.Movies)
+            {
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                    <partial name="_MovieCard" model="m" />
+                </div>
+            }
+        </div>
+    }
+</div>

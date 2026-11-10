@@ -1,0 +1,95 @@
+@model List<Seat>
+@{
+    ViewData["Title"] = "Quản lý ghế";
+    var selectedRoomId = (int)ViewBag.SelectedRoomId;
+    var selectedRoom = ((List<Room>)ViewBag.Rooms).FirstOrDefault(r => r.Id == selectedRoomId);
+}
+
+<div class="container page-shell">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h1 class="fw-bold mb-0" style="font-size:1.4rem"><i class="bi bi-grid-3x3 me-2" style="color:var(--accent-cyan)"></i>Quản lý ghế</h1>
+        <a class="btn btn-cta btn-sm" asp-action="CreateSeat" asp-route-roomId="@selectedRoomId"><i class="bi bi-plus-lg me-1"></i>Thêm ghế</a>
+    </div>
+
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4 mb-4">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Chọn phòng chiếu</label>
+                <select class="form-select" onchange="location.href='/Admin/Seats?roomId=' + this.value;">
+                    @foreach (var r in (List<Room>)ViewBag.Rooms)
+                    {
+                        <option value="@r.Id" selected="@(r.Id == selectedRoomId)">@r.Name (@r.Cinema.Name)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Ghế hiện có: <strong style="color:var(--accent-gold)">@Model.Count</strong> / @(selectedRoom?.Capacity ?? 0)</label>
+            </div>
+            @if (Model.Count == 0 && selectedRoomId > 0)
+            {
+                <div class="col-md-4">
+                    <form asp-action="GenerateSeats" method="post" class="d-flex gap-2 align-items-end">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="roomId" value="@selectedRoomId" />
+                        <div>
+                            <label class="form-label small">Số hàng</label>
+                            <input name="rows" type="number" class="form-control" value="8" min="1" max="20" style="width:90px" />
+                        </div>
+                        <div>
+                            <label class="form-label small">Số cột</label>
+                            <input name="cols" type="number" class="form-control" value="12" min="1" max="30" style="width:90px" />
+                        </div>
+                        <button class="btn btn-theme btn-sm" type="submit"><i class="bi bi-magic me-1"></i>Sinh ghế tự động</button>
+                    </form>
+                </div>
+            }
+        </div>
+        @if (TempData["AdminError"] != null)
+        {
+            <div class="alert alert-danger mt-3 mb-0">@TempData["AdminError"]</div>
+        }
+    </div>
+
+    <div class="galaxy-panel p-0 overflow-auto">
+        <table class="table table-galaxy mb-0">
+            <thead>
+                <tr>
+                    <th>Mã ghế</th>
+                    <th>Hàng</th>
+                    <th>Cột</th>
+                    <th>Loại ghế</th>
+                    <th>Hệ số giá</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@s.Code</td>
+                        <td>@s.RowNumber</td>
+                        <td>@s.ColumnNumber</td>
+                        <td>
+                            @switch (s.SeatType)
+                            {
+                                case SeatType.Vip: <span class="badge-status badge-pending">VIP</span> break;
+                                case SeatType.Couple: <span class="badge-status badge-pending">Đôi</span> break;
+                                default: <span class="badge-status badge-paid">Thường</span> break;
+                            }
+                        </td>
+                        <td>x@s.PriceMultiplier.ToString("0.0")</td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-theme btn-sm" asp-action="EditSeat" asp-route-id="@s.Id"><i class="bi bi-pencil"></i></a>
+                            <form asp-action="DeleteSeat" method="post" asp-route-id="@s.Id" class="d-inline" onsubmit="return confirm('Xóa ghế @s.Code?');">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-danger-ghost btn-sm" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

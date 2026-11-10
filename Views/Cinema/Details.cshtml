@@ -1,0 +1,103 @@
+@model Cinema
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container page-shell">
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Cinema" asp-action="Index">Hệ thống rạp</a></li>
+            <li class="breadcrumb-item active text-muted" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="galaxy-panel p-4">
+        <h1 class="fw-bold" style="font-size:1.4rem">@Model.Name</h1>
+        <p class="text-muted mb-2"><i class="bi bi-geo-alt me-2" style="color:var(--accent-cyan)"></i>@Model.Address</p>
+        @if (!string.IsNullOrEmpty(Model.Phone))
+        {
+            <p class="text-muted"><i class="bi bi-telephone me-2" style="color:var(--accent-cyan)"></i>@Model.Phone</p>
+        }
+    </div>
+
+    <div class="row g-4 mt-1">
+        @foreach (var room in Model.Rooms)
+        {
+            <div class="col-md-4">
+                <div class="info-card">
+                    <div class="info-icon mb-2">
+                        @switch (room.RoomType)
+                        {
+                            case RoomType.IMAX: <i class="bi bi-tv"></i> break;
+                            case RoomType.Standard3D: <i class="bi bi-boxes"></i> break;
+                            default: <i class="bi bi-display"></i> break;
+                        }
+                    </div>
+                    <h5 class="fw-bold mb-1">@room.Name</h5>
+                    <div class="text-muted small">
+                        @switch (room.RoomType)
+                        {
+                            case RoomType.IMAX: <span>Phòng IMAX - màn hình khổng lồ</span> break;
+                            case RoomType.Standard3D: <span>Phòng 3D - công nghệ 3D hiện đại</span> break;
+                            default: <span>Phòng 2D tiêu chuẩn</span> break;
+                        }
+                    </div>
+                    <div class="mt-2"><span class="badge-status badge-paid">@room.Capacity ghế</span></div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @{
+        var upcomingShowtimes = ViewBag.UpcomingShowtimes as List<Showtime> ?? new List<Showtime>();
+    }
+
+    <div class="galaxy-panel mt-4 p-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h5 class="font-display mb-0"><i class="bi bi-calendar-week me-2" style="color:var(--accent-cyan)"></i>Lịch chiếu sắp tới</h5>
+            <span class="badge-status badge-paid"><i class="bi bi-clock me-1"></i>Giờ Việt Nam (GMT+7) · @VnTime.Now.ToString("HH:mm dd/MM/yyyy")</span>
+        </div>
+        @if (!upcomingShowtimes.Any())
+        {
+            <div class="alert alert-info mb-0">Rạp này hiện chưa có suất chiếu sắp tới.</div>
+        }
+        else
+        {
+            <div class="d-flex flex-column gap-3">
+                @foreach (var group in upcomingShowtimes.GroupBy(s => s.StartTime.Date).OrderBy(g => g.Key))
+                {
+                    <div>
+                        <div class="fw-bold mb-2" style="color:var(--accent-gold)">
+                            @group.Key.ToString("dd/MM/yyyy")
+                            @if (group.Key == VnTime.Today)
+                            {
+                                <span class="badge-status badge-paid ms-2">Hôm nay</span>
+                            }
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var st in group.OrderBy(s => s.StartTime))
+                            {
+                                <a class="btn btn-theme btn-sm" asp-controller="Booking" asp-action="SelectShowtime"
+                                   asp-route-movieId="@st.MovieId" asp-route-cinemaId="@Model.Id"
+                                   asp-route-date="@st.StartTime.ToString("yyyy-MM-dd")">
+                                    <i class="bi bi-clock me-1"></i>@st.StartTime.ToString("HH:mm")
+                                    <span class="small ms-1">@st.Movie.Title</span>
+                                    <span class="small opacity-75">· @st.Room.Name</span>
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="galaxy-panel mt-4 p-4">
+        <h5 class="font-display mb-3"><i class="bi bi-geo-alt me-2" style="color:var(--accent-cyan)"></i>Bản đồ đến rạp</h5>
+        <div class="ratio ratio-21x9 rounded-3 overflow-hidden">
+            <iframe title="Bản đồ @Model.Name" src="@MapHelper.GetEmbedSrc(Model)" loading="lazy" style="border:0"></iframe>
+        </div>
+        <a class="btn btn-ghost btn-sm mt-2" href="@MapHelper.GetMapLink(Model)" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-1"></i>Mở trên Google Maps</a>
+    </div>
+</div>

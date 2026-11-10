@@ -1,0 +1,71 @@
+@model List<Room>
+@{
+    ViewData["Title"] = "Quản lý phòng chiếu";
+}
+
+<div class="container page-shell">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <h1 class="fw-bold mb-0" style="font-size:1.4rem"><i class="bi bi-display me-2" style="color:var(--accent-cyan)"></i>Quản lý phòng chiếu</h1>
+        <a class="btn btn-cta btn-sm" asp-action="CreateRoom"><i class="bi bi-plus-lg me-1"></i>Thêm phòng</a>
+    </div>
+
+    <partial name="_AdminNav" />
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["AdminError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["AdminError"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="galaxy-panel p-0 overflow-auto">
+        <table class="table table-galaxy mb-0">
+            <thead>
+                <tr>
+                    <th>Tên phòng</th>
+                    <th>Chi nhánh</th>
+                    <th>Loại phòng</th>
+                    <th>Sức chứa</th>
+                    <th>Số ghế thực tế</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@r.Name</td>
+                        <td>@r.Cinema.Name</td>
+                        <td>
+                            @switch (r.RoomType)
+                            {
+                                case RoomType.IMAX: <span class="badge-status badge-pending">IMAX</span> break;
+                                case RoomType.Standard3D: <span class="badge-status badge-paid">3D</span> break;
+                                default: <span class="badge-status badge-paid">2D</span> break;
+                            }
+                        </td>
+                        <td>@r.Capacity</td>
+                        <td class="text-muted">@r.Seats.Count</td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-theme btn-sm" asp-action="Seats" asp-route-roomId="@r.Id" title="Quản lý ghế"><i class="bi bi-grid-3x3"></i></a>
+                            <a class="btn btn-theme btn-sm" asp-action="EditRoom" asp-route-id="@r.Id" title="Sửa"><i class="bi bi-pencil"></i></a>
+                            <form asp-action="DeleteRoom" method="post" asp-route-id="@r.Id" class="d-inline" onsubmit="return confirm('Xóa phòng @r.Name?');">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-danger-ghost btn-sm" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <defs>
+    <linearGradient id="pop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#e08b00"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="120" cy="258" rx="52" ry="16" fill="#0d1b2a" opacity="0.5"/>
+  <ellipse cx="225" cy="258" rx="42" ry="13" fill="#0d1b2a" opacity="0.5"/>
+  <path d="M80 214 L74 252 H166 L160 214 Z" fill="#c94f1f"/>
+  <path d="M74 252 Q120 266 166 252 L166 268 Q120 282 74 268 Z" fill="#a53a12"/>
+  <path d="M78 212 L88 134 H152 L162 212 Z" fill="url(#pop)"/>
+  <path d="M90 138 C88 124 99 118 99 118 C105 110 118 110 118 110 C125 104 133 108 133 108 C142 106 149 115 149 115 C157 116 157 127 157 127 C163 133 161 139 161 139 Z" fill="#ffe28a"/>
+  <circle cx="108" cy="184" r="4.5" fill="#c94f1f"/><circle cx="126" cy="192" r="4.5" fill="#c94f1f"/><circle cx="144" cy="184" r="4.5" fill="#c94f1f"/>
+  <path d="M202 152 H248 L244 214 H206 Z" fill="url(#pop)"/>
+  <path d="M207 158 C204 148 216 144 216 144 C222 140 234 142 234 142 C242 142 244 152 244 152 C248 158 245 164 245 164 Z" fill="#ffe28a"/>
+  <path d="M218 200 h16 v28 h-16 Z" fill="#00d4ff" opacity="0.9"/>
+  <text x="150" y="118" text-anchor="middle" font-family="Orbitron,Arial" font-weight="700" font-size="16" fill="#ffd700" letter-spacing="1">COMBO DOI</text>
+</svg>

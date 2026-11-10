@@ -1,0 +1,14 @@
+@{
+    var current = (int)(ViewData["CurrentStep"] ?? 1);
+    var steps = new[] { "Chọn suất chiếu", "Chọn ghế", "Combo bắp nước", "Xác nhận & Thanh toán" };
+}
+<div class="stepper">
+    @for (int i = 1; i <= steps.Length; i++)
+    {
+        var cls = i < current ? "done" : (i == current ? "active" : "");
+        <div class="step @cls">
+            <span class="step-num">@i</span>
+            <span class="step-label">@steps[i - 1]</span>
+        </div>
+    }
+</div>

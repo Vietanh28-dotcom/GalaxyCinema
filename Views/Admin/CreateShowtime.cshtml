@@ -1,0 +1,47 @@
+@model Showtime
+@{
+    ViewData["Title"] = "Thêm suất chiếu";
+}
+
+<div class="container page-shell" style="max-width:820px">
+    <h1 class="fw-bold mb-3" style="font-size:1.4rem"><i class="bi bi-calendar-week me-2" style="color:var(--accent-cyan)"></i>Thêm suất chiếu</h1>
+    <partial name="_AdminNav" />
+
+    <div class="galaxy-panel p-4">
+        <form asp-action="CreateShowtime" method="post">
+            <div asp-validation-summary="All" class="text-danger small mb-3"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="MovieId" class="form-label"></label>
+                    <select asp-for="MovieId" class="form-select" asp-items="@(new SelectList(ViewBag.Movies, "Id", "Title"))"></select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="RoomId" class="form-label"></label>
+                    <select asp-for="RoomId" class="form-select" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Label"))"></select>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="StartTime" class="form-label"></label>
+                    <input asp-for="StartTime" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="StartTime" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="BasePrice" class="form-label"></label>
+                    <input asp-for="BasePrice" type="number" step="1000" class="form-control" />
+                    <span asp-validation-for="BasePrice" class="text-danger small"></span>
+                </div>
+                <div class="col-12 form-check form-switch ps-5">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label"></label>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button type="submit" class="btn btn-cta"><i class="bi bi-check-lg me-1"></i>Lưu suất chiếu</button>
+                    <a class="btn btn-ghost" asp-action="Showtimes">Hủy</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

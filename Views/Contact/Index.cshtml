@@ -1,0 +1,73 @@
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<div class="container" style="padding-top:120px; padding-bottom:60px;">
+    <h1 class="fw-bold mb-1" style="font-size:1.8rem">
+        <i class="bi bi-envelope me-2" style="color:var(--accent-cyan)"></i>LIÊN HỆ
+    </h1>
+    <p class="text-muted mb-4">Chúng tôi luôn sẵn sàng hỗ trợ bạn trên hành trình điện ảnh</p>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="info-card mb-3">
+                <div class="info-icon mb-2"><i class="bi bi-headset"></i></div>
+                <h5 class="fw-bold">Hotline hỗ trợ</h5>
+                <p class="text-muted mb-1">1900 5555 66</p>
+                <p class="text-muted small mb-0">9:00 - 22:00 mỗi ngày</p>
+            </div>
+            <div class="info-card mb-3">
+                <div class="info-icon mb-2"><i class="bi bi-envelope"></i></div>
+                <h5 class="fw-bold">Email</h5>
+                <p class="text-muted mb-1">hotro@galaxycinema.vn</p>
+                <p class="text-muted small mb-0">Phản hồi trong vòng 24h</p>
+            </div>
+            <div class="info-card">
+                <div class="info-icon mb-2"><i class="bi bi-geo-alt"></i></div>
+                <h5 class="fw-bold">Hệ thống rạp</h5>
+                <p class="text-muted mb-1">247 Hoàng Văn Thụ, Q. Tân Bình, TP.HCM</p>
+                <p class="text-muted mb-0">Số 2 Nguyễn Trãi, Q. Thanh Xuân, Hà Nội</p>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="galaxy-panel p-4">
+                <h4 class="font-display fw-bold mb-3">Gửi thông tin cho chúng tôi</h4>
+
+                @if (ViewBag.Success == true)
+                {
+                    <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</div>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+                {
+                    <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>@ViewBag.Error</div>
+                }
+
+                <form method="post" asp-action="Index">
+                    @Html.AntiForgeryToken()
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Họ tên *</label>
+                            <input name="name" class="form-control" required placeholder="Nguyễn Văn A" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email *</label>
+                            <input name="email" type="email" class="form-control" required placeholder="ban@email.com" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Chủ đề</label>
+                            <input name="subject" class="form-control" placeholder="Ví dụ: Hỏi về đặt vé" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Nội dung *</label>
+                            <textarea name="message" class="form-control" rows="5" required placeholder="Nội dung cần hỗ trợ..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-cta"><i class="bi bi-send me-2"></i>Gửi liên hệ</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
